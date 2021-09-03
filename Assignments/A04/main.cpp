@@ -28,10 +28,8 @@ using namespace std;
 //      method
 //
 // Public Methods:
-//      -CircularArrayQue() a default constructor that creates the queue
-//       of size 10
-//      -CircularArrayQue(int size) an overloaded constructor that takes an
-//       int and creates a queue of size 'size'
+//      -CircularArrayQue() 
+//      -CircularArrayQue(int size) 
 //      -Push(int item) 
 //      -Pop() 
 //
