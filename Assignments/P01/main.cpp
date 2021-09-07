@@ -116,6 +116,10 @@ public:
     //    vector<size> v1;
     }
 
+    MyVector(const MyVector &V1) {
+
+    }
+
     void Push(int x) {
         node* tempPtr = new node(x);  // create a new node and
                                       // add data to it
