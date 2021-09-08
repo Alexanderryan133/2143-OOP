@@ -75,6 +75,7 @@ void printArr(int* arr, int size) {
 class MyVector {
 private:
     node* head;  // base pointer of list
+    node* tail;
     int size;
 public:
     /**
@@ -104,6 +105,7 @@ public:
     MyVector(int *A, int size) {
         head = NULL;  // NULL = zeros
                       // and zeros imply empty
+        tail = NULL;
 
         for (int i = 0; i < size; i++) {
             Push(A[i]);
@@ -149,6 +151,46 @@ public:
             temp = temp->next;  // move to next node
         }
         cout << endl;
+    }
+
+    void pushFront(int val) {
+
+    }
+
+    void pushFront(MyVector V2) {
+
+    }
+
+    void pushRear(int val) {
+
+    }
+
+    void pushRear(MyVector V2) {
+
+    }
+
+    void pushAt(int loc, int val) {
+
+    }
+
+    void inOrderPush(int val) {
+
+    }
+
+    int popFront() {
+
+    }
+
+    int popRear() {
+
+    }
+
+    int find(int val) {
+
+    }
+
+    int popAt(int loc) {
+
     }
 
     ~MyVector() {
