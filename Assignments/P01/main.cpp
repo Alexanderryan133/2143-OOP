@@ -19,12 +19,13 @@ using namespace std;
 // Node for our linked list
 struct node {
     int data;  // data value (could be a lot more values)
-
+    node* prev;
     node* next;  // we always need a "link" in a linked list
 
     node(int x) {  // cunstructor to make adding values easy
         data = x;
         next = NULL;
+        prev = NULL;
     }
 };
 
@@ -110,6 +111,7 @@ public:
         for (int i = 0; i < size; i++) {
             Push(A[i]);
         }
+        //head = MyVector.begin();
     }
 
     MyVector(string filename) {
