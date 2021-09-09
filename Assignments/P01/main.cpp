@@ -190,6 +190,7 @@ public:
             Node* killMe = head;
             head = head->next;
             delete killMe;
+            size--;
             return popped;
         }
         return -1;
@@ -201,6 +202,7 @@ public:
             Node* killMe = tail;
             tail = tail->prev;
             delete killMe;
+            size--;
             return popped;
         }
         return -1;
@@ -244,11 +246,9 @@ v1.print();
 int A[] = {11,25,33,47,51};
 MyVector v2(A,5);
 v2.print();
-cout << "we are here";
 
 v2.pushFront(9);
 v2.pushRear(63);
-cout <<"we made it";
 
 v1.pushRear(v2);
 v1.print();
