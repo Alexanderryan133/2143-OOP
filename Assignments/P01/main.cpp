@@ -29,35 +29,6 @@ class Node {
     Node* next;  // we always need a "link" in a linked list
 };
 
-/**
- * @brief Load array with values from a file
- * 
- * @param string filename 
- * @param int*& arr 
- * @param int& size 
- */
-// void loadArr(string filename, int*& arr, int& size) {
-//     ifstream fin;         // stream reference
-//                           //
-//     fin.open(filename);   // open the file
-//                           //
-//     fin >> size;          // get first value which contains
-//                           // number of remaining values in file
-//                           //
-//     arr = new int[size];  // allocate new array of correct size
-//                           //
-//     int i = 0;            // need an array index for our while loop
-//                           //
-//     // Can also use for loop since we know the exact count in file.
-//     // eof = end of file flag
-//     // `!fin.eof()` evaulates to true when we hit end of file.
-//     while (!fin.eof()) {
-//         fin >> arr[i];  // read file value straight into array
-//                         // at index i
-//         i++;            // increment array index
-//     }
-
-
 
 class MyVector {
 private:
@@ -106,11 +77,6 @@ public:
         size++;
         }
         
-
-        // for (int i = 0; i < size; i++) {
-        //     Push(A[i]);
-        // }
-        //head = MyVector.begin();
     }
 
     MyVector(string filename) {
@@ -253,6 +219,13 @@ public:
     }
 
     ~MyVector() {
+        Node* travel = head;
+        while(travel != nullptr){
+            Node* tempnode = travel;
+            travel = travel->next;
+            delete tempnode;
+        }
+        head = nullptr;
     }
 };
 
