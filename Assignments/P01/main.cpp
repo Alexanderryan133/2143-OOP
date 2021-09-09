@@ -17,16 +17,16 @@
 using namespace std;
 
 // Node for our linked list
-struct node {
-    int data;  // data value (could be a lot more values)
-    node* prev;
-    node* next;  // we always need a "link" in a linked list
-
-    node(int x) {  // cunstructor to make adding values easy
-        data = x;
-        next = NULL;
-        prev = NULL;
+class Node {
+    public:
+    Node(int d, Node* n = nullptr, Node* p = nullptr) {  // cunstructor to make adding values easy
+        data = d;
+        next = n;
+        prev = p;
     }
+    int data;  // data value (could be a lot more values)
+    Node* prev;
+    Node* next;  // we always need a "link" in a linked list
 };
 
 /**
@@ -36,47 +36,33 @@ struct node {
  * @param int*& arr 
  * @param int& size 
  */
-void loadArr(string filename, int*& arr, int& size) {
-    ifstream fin;         // stream reference
-                          //
-    fin.open(filename);   // open the file
-                          //
-    fin >> size;          // get first value which contains
-                          // number of remaining values in file
-                          //
-    arr = new int[size];  // allocate new array of correct size
-                          //
-    int i = 0;            // need an array index for our while loop
-                          //
-    // Can also use for loop since we know the exact count in file.
-    // eof = end of file flag
-    // `!fin.eof()` evaulates to true when we hit end of file.
-    while (!fin.eof()) {
-        fin >> arr[i];  // read file value straight into array
-                        // at index i
-        i++;            // increment array index
-    }
-}
+// void loadArr(string filename, int*& arr, int& size) {
+//     ifstream fin;         // stream reference
+//                           //
+//     fin.open(filename);   // open the file
+//                           //
+//     fin >> size;          // get first value which contains
+//                           // number of remaining values in file
+//                           //
+//     arr = new int[size];  // allocate new array of correct size
+//                           //
+//     int i = 0;            // need an array index for our while loop
+//                           //
+//     // Can also use for loop since we know the exact count in file.
+//     // eof = end of file flag
+//     // `!fin.eof()` evaulates to true when we hit end of file.
+//     while (!fin.eof()) {
+//         fin >> arr[i];  // read file value straight into array
+//                         // at index i
+//         i++;            // increment array index
+//     }
 
-/**
- * @brief Prints an array
- * 
- * @param int arr 
- * @param int size
- * 
- * @returns void
- */
-void printArr(int* arr, int size) {
-    for (int i = 0; i < size; i++) {
-        cout << "[" << arr[i] << "]";
-    }
-    cout << "\n";
-}
+
 
 class MyVector {
 private:
-    node* head;  // base pointer of list
-    node* tail;
+    Node* head;  // base pointer of list
+    Node* tail;
     int size;
 public:
     /**
@@ -88,8 +74,9 @@ public:
      * @return void
      */
     MyVector() {
-        head = NULL;  // NULL = zeros
+        head = nullptr;  // NULL = zeros
                       // and zeros imply empty
+        tail = nullptr;
     }
 
     /**
@@ -103,45 +90,65 @@ public:
      * 
      * @return void
      */
-    MyVector(int *A, int size) {
-        head = NULL;  // NULL = zeros
+    MyVector(int *A, int arrSize) {
+        head = nullptr;  // NULL = zeros
                       // and zeros imply empty
-        tail = NULL;
+        tail = nullptr;
+        for (int i = 0; i < arrSize; i++){
+        head = new Node(A[i], head);
 
-        for (int i = 0; i < size; i++) {
-            Push(A[i]);
+        if (head->next == nullptr){
+            tail = head;
         }
+        else{
+            head->next->prev = head;
+        }
+        size++;
+        }
+        
+
+        // for (int i = 0; i < size; i++) {
+        //     Push(A[i]);
+        // }
         //head = MyVector.begin();
     }
 
     MyVector(string filename) {
         ifstream fin; fin.open(filename);
+        head = tail = nullptr;
+        int temp;
 
-    //    vector<size> v1;
+        int i = 0;
+        while(!fin.eof()) {
+            fin >> temp;
+            head = new Node(temp, head);
+            if (head->next == nullptr){
+                tail = head;
+            }
+            else {
+                head->next->prev = head;
+            }
+            size++;
+            i++;
+        }
     }
 
     MyVector(const MyVector &V1) {
-
-    }
-
-    void Push(int x) {
-        node* tempPtr = new node(x);  // create a new node and
-                                      // add data to it
-
-        if (!head) {  // `!head` implies empty list
-                      // So does `head == NULL`
-
-            head = tempPtr;  // `head = tempPtr` places addrress of
-                             // tempPtr in head (points head to tempPtr)
-
-        } else {                   // list not empty
-            tempPtr->next = head;  // point tempPtr's next to what head points to
-            head = tempPtr;        // now point head to tempPtr
+        head = tail = nullptr;
+        for (int i = 0; i < V1.size; i++){
+            head = new Node(V1.head->data, head);
+            if (head->next == nullptr){
+                tail = head;
+            }
+            else {
+                head->next->prev = head;
+            }
+            size++;
         }
     }
 
     void print() {
-        node* temp = head;  // temp pointer copies head
+        Node* temp = head;  // temp pointer copies head
 
         while (temp) {  // this loops until temp is NULL
                         // same as `while(temp != NULL)`
@@ -156,19 +163,51 @@ public:
     }
 
     void pushFront(int val) {
+        head = new Node(val, head);
 
+        if (head->next == nullptr){
+            tail = head;
+        }
+        else{
+            head->next->prev = head;
+        }
     }
 
     void pushFront(MyVector V2) {
-
+        for (int i = 0; i < V2.size; i++){
+            head = new Node(V2.head->data, head);
+            if (head->next == nullptr){
+                tail = head;
+            }
+            else {
+                head->next->prev = head;
+            }
+            size++;
+        }
     }
 
     void pushRear(int val) {
+        tail = new Node(val, nullptr, tail);
 
+        if (tail->prev == nullptr){
+            head = tail;
+        }
+        else{
+            tail->prev->next = tail;
+        }
     }
 
     void pushRear(MyVector V2) {
-
+        for (int i = 0; i < V2.size; i++){
+            tail = new Node(V2.tail->data, nullptr, tail);
+            if (tail->prev == nullptr){
+                tail = head;
+            }
+            else {
+                head->next->prev = head;
+            }
+            size++;
+        }
     }
 
     void pushAt(int loc, int val) {
@@ -180,19 +219,37 @@ public:
     }
 
     int popFront() {
-
+        if(!empty()){
+            int popped = head->data;
+            Node* killMe = head;
+            head = head->next;
+            delete killMe;
+            return popped;
+        }
+        return -1;
     }
 
     int popRear() {
-
+        if(!empty()){
+            int popped = tail->data;
+            Node* killMe = tail;
+            tail = tail->prev;
+            delete killMe;
+            return popped;
+        }
+        return -1;
     }
 
-    int find(int val) {
+    // int find(int val) {
 
-    }
+    // }
 
-    int popAt(int loc) {
+    // int popAt(int loc) {
 
+    // }
+
+    bool empty(){
+        return head == nullptr;
     }
 
     ~MyVector() {
@@ -200,17 +257,38 @@ public:
 };
 
 int main() {
-    //int        A[] = {1, 2, 3, 4, 5, 6};    // array initialized with 1-6
-    //MyVector L(A, 6);                     // linked list built with array
+int x = 0;
 
-    //L.print();  // print the list
+MyVector v1;
+v1.pushFront(18);
+v1.pushFront(20);
+v1.pushFront(25);
+v1.pushRear(18);
+v1.pushRear(20);
+v1.pushRear(25);
+v1.print();
 
-    int* B;     // Int pointer to reference a linked list
-    int  size;  // used to hold a count for list and array
+int A[] = {11,25,33,47,51};
+MyVector v2(A,5);
+v2.print();
+cout << "we are here";
 
-    loadArr("input.dat", B, size);  // Stand alone function to
-                                    //    read values in from file
-    printArr(B, size);              // Stand alone function to print array
-    MyVector L2(B, size);         // Create 2nd instance of list
-    L2.print();                     // Print list 2
+v2.pushFront(9);
+v2.pushRear(63);
+cout <<"we made it";
+
+v1.pushRear(v2);
+v1.print();
+
+x = v1.popRear();
+x = v1.popRear();
+x = v1.popRear();
+v1.print();
+cout<<x<<endl;
+
+MyVector v3(v1);
+v3.print();
+
+v3.pushFront(v2);
+v3.print();
 }
